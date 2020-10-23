@@ -105,17 +105,17 @@ public class Teste {
 		int sementes;
 		int ultimaPosicao = 0;
 		boolean inverter;
-		boolean ultimoJogador = false; //Porque começa falso?
+		boolean ultimoJogador = false;
 		
 		sementes = tabuleiro[jogador][posicao];
 		tabuleiro[jogador][posicao] = 0;
 		if(jogador == 0) {
 			j = posicao - 1;
-			inverter = true; //averiguada aqui
+			inverter = true; ///////
 		}
 		else {
 			j = posicao + 1;
-			inverter = false; //aqui tbm
+			inverter = false; ///////
 		}
 		
 		while(sementes>0) {
@@ -140,7 +140,7 @@ public class Teste {
 			if(inverter) {
 				ultimaPosicao = j+1;
 			}
-			else {//Averiguada nesses ////
+			else {// ----**---- ////
 				ultimaPosicao = j-1;
 			}
 			ultimoJogador = inverter;

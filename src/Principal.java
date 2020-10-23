@@ -7,6 +7,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+/*
+ * Classe utilizada somente para testes, favor ignorar.
+*/
+
 public class Principal {
 	
 	private static ServerSocket serverSocket = null;

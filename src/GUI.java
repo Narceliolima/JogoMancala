@@ -25,7 +25,7 @@ public class GUI {
 	private JButton voltarVez;
 	private int jogador;
 	//--------------------------------------------//--------------------------------------------//
-	private ArrayList<JButton> botoes;
+	//private ArrayList<JButton> botoes; //Refinar... Caso dê tempo
 	private JButton botao01;
 	private JButton botao02;
 	private JButton botao03;
