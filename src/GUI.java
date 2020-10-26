@@ -10,6 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import java.awt.Font;
+import java.awt.Color;
 
 public class GUI {
 
@@ -42,6 +43,8 @@ public class GUI {
 	private JLabel placar00;
 	private JLabel placar16;
 	private JLabel jogando;
+	private JLabel jogador1;
+	private JLabel jogador2;
 	//--------------------------------------------//--------------------------------------------//
 	
 	public GUI(int[][] tabuleiro) {
@@ -90,40 +93,40 @@ public class GUI {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(arg0.getSource() == botao01) {
+				if(arg0.getSource() == botao01&&jogador==0) {
 					mensagem = "int:>1";
 				}
-				else if(arg0.getSource() == botao02) {
+				else if(arg0.getSource() == botao02&&jogador==0) {
 					mensagem = "int:>2";
 				}
-				else if(arg0.getSource() == botao03) {
+				else if(arg0.getSource() == botao03&&jogador==0) {
 					mensagem = "int:>3";
 				}
-				else if(arg0.getSource() == botao04) {
+				else if(arg0.getSource() == botao04&&jogador==0) {
 					mensagem = "int:>4";
 				}
-				else if(arg0.getSource() == botao05) {
+				else if(arg0.getSource() == botao05&&jogador==0) {
 					mensagem = "int:>5";
 				}
-				else if(arg0.getSource() == botao06) {
+				else if(arg0.getSource() == botao06&&jogador==0) {
 					mensagem = "int:>6";
 				}
-				else if(arg0.getSource() == botao10) {
+				else if(arg0.getSource() == botao10&&jogador==1) {
 					mensagem = "int:>0";
 				}
-				else if(arg0.getSource() == botao11) {
+				else if(arg0.getSource() == botao11&&jogador==1) {
 					mensagem = "int:>1";
 				}
-				else if(arg0.getSource() == botao12) {
+				else if(arg0.getSource() == botao12&&jogador==1) {
 					mensagem = "int:>2";
 				}
-				else if(arg0.getSource() == botao13) {
+				else if(arg0.getSource() == botao13&&jogador==1) {
 					mensagem = "int:>3";
 				}
-				else if(arg0.getSource() == botao14) {
+				else if(arg0.getSource() == botao14&&jogador==1) {
 					mensagem = "int:>4";
 				}
-				else if(arg0.getSource() == botao15) {
+				else if(arg0.getSource() == botao15&&jogador==1) {
 					mensagem = "int:>5";
 				}
 				else if(arg0.getSource() == desistir) {
@@ -131,6 +134,9 @@ public class GUI {
 				}
 				else if(arg0.getSource() == voltarVez) {
 					mensagem = "vol:>";
+				}
+				else {
+					mensagem = "null:>";
 				}
 				pressionado = true;
 			}
@@ -235,6 +241,7 @@ public class GUI {
 		frame.getContentPane().setLayout(null);
 		
 		botao01 = new JButton(this.tabuleiro[0][1]+"");
+		botao01.setForeground(Color.RED);
 		botao01.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao01.setBounds(390, 187, 76, 72);
 		botao01.setOpaque(false);
@@ -243,6 +250,7 @@ public class GUI {
 		frame.getContentPane().add(botao01);
 		
 		botao02 = new JButton(tabuleiro[0][2]+"");
+		botao02.setForeground(Color.RED);
 		botao02.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao02.setBounds(507, 187, 76, 72);
 		botao02.setOpaque(false);
@@ -251,6 +259,7 @@ public class GUI {
 		frame.getContentPane().add(botao02);
 		
 		botao03 = new JButton(tabuleiro[0][3]+"");
+		botao03.setForeground(Color.RED);
 		botao03.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao03.setBounds(627, 187, 76, 72);
 		botao03.setOpaque(false);
@@ -259,6 +268,7 @@ public class GUI {
 		frame.getContentPane().add(botao03);
 		
 		botao04 = new JButton(tabuleiro[0][4]+"");
+		botao04.setForeground(Color.RED);
 		botao04.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao04.setBounds(749, 187, 76, 72);
 		botao04.setOpaque(false);
@@ -267,6 +277,7 @@ public class GUI {
 		frame.getContentPane().add(botao04);
 		
 		botao05 = new JButton(tabuleiro[0][5]+"");
+		botao05.setForeground(Color.RED);
 		botao05.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao05.setBounds(869, 187, 76, 72);
 		botao05.setOpaque(false);
@@ -275,6 +286,7 @@ public class GUI {
 		frame.getContentPane().add(botao05);
 		
 		botao06 = new JButton(tabuleiro[0][6]+"");
+		botao06.setForeground(Color.RED);
 		botao06.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao06.setBounds(988, 187, 76, 72);
 		botao06.setOpaque(false);
@@ -283,6 +295,7 @@ public class GUI {
 		frame.getContentPane().add(botao06);
 		
 		botao10 = new JButton(Integer.toString(tabuleiro[1][0]));
+		botao10.setForeground(Color.BLUE);
 		botao10.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao10.setBounds(390, 393, 76, 72);
 		botao10.setOpaque(false);
@@ -291,6 +304,7 @@ public class GUI {
 		frame.getContentPane().add(botao10);
 		
 		botao11 = new JButton(Integer.toString(tabuleiro[1][1]));
+		botao11.setForeground(Color.BLUE);
 		botao11.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao11.setBounds(507, 393, 76, 72);
 		botao11.setOpaque(false);
@@ -299,6 +313,7 @@ public class GUI {
 		frame.getContentPane().add(botao11);
 		
 		botao12 = new JButton(Integer.toString(tabuleiro[1][2]));
+		botao12.setForeground(Color.BLUE);
 		botao12.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao12.setBounds(627, 393, 76, 72);
 		botao12.setOpaque(false);
@@ -307,6 +322,7 @@ public class GUI {
 		frame.getContentPane().add(botao12);
 		
 		botao13 = new JButton(Integer.toString(tabuleiro[1][3]));
+		botao13.setForeground(Color.BLUE);
 		botao13.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao13.setBounds(749, 393, 76, 72);
 		botao13.setOpaque(false);
@@ -315,6 +331,7 @@ public class GUI {
 		frame.getContentPane().add(botao13);
 		
 		botao14 = new JButton(Integer.toString(tabuleiro[1][4]));
+		botao14.setForeground(Color.BLUE);
 		botao14.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao14.setBounds(869, 393, 76, 72);
 		botao14.setOpaque(false);
@@ -323,6 +340,7 @@ public class GUI {
 		frame.getContentPane().add(botao14);
 		
 		botao15 = new JButton(Integer.toString(tabuleiro[1][5]));
+		botao15.setForeground(Color.BLUE);
 		botao15.setFont(new Font("Dialog", Font.BOLD, 30));
 		botao15.setBounds(988, 393, 76, 72);
 		botao15.setOpaque(false);
@@ -342,12 +360,14 @@ public class GUI {
 	private void iniciaPlacar() {
 		
 		placar00 = new JLabel(this.tabuleiro[0][0]+"");
+		placar00.setForeground(Color.RED);
 		placar00.setFont(new Font("Dialog", Font.BOLD, 30));
 		placar00.setHorizontalAlignment(SwingConstants.CENTER);
 		placar00.setBounds(278, 349, 57, 65);
 		frame.getContentPane().add(placar00);
 		
 		placar16 = new JLabel(this.tabuleiro[1][6]+"");
+		placar16.setForeground(Color.BLUE);
 		placar16.setBounds(1119, 232, 57, 65);
 		placar16.setFont(new Font("Dialog", Font.BOLD, 30));
 		placar16.setHorizontalAlignment(SwingConstants.CENTER);
@@ -358,6 +378,20 @@ public class GUI {
 		jogando.setFont(new Font("Dialog", Font.BOLD, 30));
 		jogando.setBounds(573, 301, 332, 36);
 		frame.getContentPane().add(jogando);
+		
+		jogador1 = new JLabel("Jogador 1");
+		jogador1.setForeground(Color.RED);
+		jogador1.setHorizontalAlignment(SwingConstants.CENTER);
+		jogador1.setFont(new Font("Dialog", Font.BOLD, 30));
+		jogador1.setBounds(573, 100, 332, 36);
+		frame.getContentPane().add(jogador1);
+		
+		jogador2 = new JLabel("Jogador 2");
+		jogador2.setForeground(Color.BLUE);
+		jogador2.setHorizontalAlignment(SwingConstants.CENTER);
+		jogador2.setFont(new Font("Dialog", Font.BOLD, 30));
+		jogador2.setBounds(573, 512, 332, 36);
+		frame.getContentPane().add(jogador2);
 		
 	}
 	

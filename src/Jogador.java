@@ -143,7 +143,9 @@ public class Jogador extends Thread{
 					fim = false;
 				}
 			}
-		} catch(Exception e) {System.out.println(e);}
+		} catch(Exception e) {//System.out.println(e);
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -161,19 +163,19 @@ public class Jogador extends Thread{
 				mensagemRec = istream.readUTF();
 				if(mensagemRec.contains("msg:>")&&mensagemRec.indexOf(">")==4) {
 					win.setMensagemEnviada(mensagemRec.replaceFirst("msg:>", ""));
-					win.atualizaInterface();
+					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("tab:>")&&mensagemRec.indexOf(">")==4) {
 					int[][] tabuleiro = Teste.toTabuleiro(mensagemRec.replaceFirst("tab:>", ""));
 					win.setTabuleiro(tabuleiro);
 					win.salvaTabuleiro();
-					win.atualizaInterface();
+					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("jog:>")&&mensagemRec.indexOf(">")==4) {
 					this.jogando = Integer.parseInt(mensagemRec.replaceFirst("jog:>", ""));
 					win.turno(jogando);
 					salvaJogador();
-					win.atualizaInterface();
+					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("sur:>")&&mensagemRec.indexOf(">")==4) {
 					Teste.desistir(Integer.parseInt(mensagemRec.replaceFirst("sur:>", "")));
@@ -190,8 +192,9 @@ public class Jogador extends Thread{
 					win.voltaJogada();
 					voltaJogada();
 					win.turno(jogando);
-					win.atualizaInterface();
+					//win.atualizaInterface();
 				}
+				win.atualizaInterface();
 			} catch(Exception e) {}
 		}
 	}
