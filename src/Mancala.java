@@ -1,6 +1,6 @@
 import javax.swing.JOptionPane;
 
-public class Teste {
+public class Mancala {
 	
 	private static final int jogador1 = 0;
 	private static final int jogador2 = 1;
@@ -148,11 +148,11 @@ public class Teste {
 			/////////////////////////
 		}		
 		
-		return aplicaRegra(ultimaPosicao,ultimoJogador,tabuleiro);
+		return aplicaRegra(ultimaPosicao,ultimoJogador,tabuleiro,jogador);
 		
 	}
 	
-	public static int aplicaRegra(int ultimaPosicao, boolean ultimoJogador, int[][] tabuleiro) {
+	public static int aplicaRegra(int ultimaPosicao, boolean ultimoJogador, int[][] tabuleiro,int jogador) {
 		
 		if(ultimaPosicao==0&&ultimoJogador) { //ultimoJogador == true == jogador1
 			//Jogador 1 joga novamente
@@ -164,13 +164,13 @@ public class Teste {
 			System.out.println("Jogador 2 joga novamente");
 			return 2;
 		}
-		else if(tabuleiro[jogador1][ultimaPosicao]-1==0&&ultimoJogador&&ultimaPosicao!=0&&tabuleiro[jogador2][ultimaPosicao-1]>0) {
+		else if(tabuleiro[jogador1][ultimaPosicao]-1==0&&ultimoJogador&&ultimaPosicao!=0&&tabuleiro[jogador2][ultimaPosicao-1]>0&&jogador==jogador1) {
 			tabuleiro[jogador1][0] += tabuleiro[jogador2][ultimaPosicao-1] + 1;
 			tabuleiro[jogador1][ultimaPosicao] = 0;
 			tabuleiro[jogador2][ultimaPosicao-1] = 0;
 			
 		}
-		else if(tabuleiro[jogador2][ultimaPosicao]-1==0&&!ultimoJogador&&ultimaPosicao!=6&&tabuleiro[jogador1][ultimaPosicao+1]>0) {
+		else if(tabuleiro[jogador2][ultimaPosicao]-1==0&&!ultimoJogador&&ultimaPosicao!=6&&tabuleiro[jogador1][ultimaPosicao+1]>0&&jogador==jogador2) {
 			tabuleiro[jogador2][6] += tabuleiro[jogador1][ultimaPosicao+1] + 1;
 			tabuleiro[jogador2][ultimaPosicao] = 0;
 			tabuleiro[jogador1][ultimaPosicao+1] = 0;

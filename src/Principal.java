@@ -76,16 +76,16 @@ public class Principal {
 		
 		System.out.println(tabuleiro);
 		System.out.println(t);
-		Teste.imprimeMatriz(tabuleiro);
+		Mancala.imprimeMatriz(tabuleiro);
 		tabuleiro[0][3] = 20;
-		Teste.imprimeMatriz(t);
+		Mancala.imprimeMatriz(t);
 		
 		while(posicao!=999) {
 			//Cuidado com os static....
-			regra = Teste.jogar(jogador, posicao, tabuleiro);
+			regra = Mancala.jogar(jogador, posicao, tabuleiro);
 			//win.atualizaInterface();
-			Teste.imprimeMatriz(tabuleiro);
-			Teste.verificaVazios(tabuleiro);
+			Mancala.imprimeMatriz(tabuleiro);
+			Mancala.verificaVazios(tabuleiro);
 			if(jogador==jogador1&&regra!=1) {
 				jogador = jogador2;
 			}

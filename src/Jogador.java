@@ -30,8 +30,8 @@ public class Jogador extends Thread{
 		win = new GUI(tabuleiro);
 		historico = new ArrayList<Integer>();
 		createRunnable();
-		host = Teste.configuraHost();
-		port = Teste.configuraPorta();
+		host = Mancala.configuraHost();
+		port = Mancala.configuraPorta();
 		
 		try {
 			socket = new Socket(host, port);
@@ -62,7 +62,7 @@ public class Jogador extends Thread{
 				int ganhador = -1;
 				win.setJogador(jogador);
 				
-				win.setMensagemEnviada("Bem vindo ao Macala");
+				win.setMensagemEnviada("Bem vindo ao Mancala");
 				win.setMensagemEnviada("Você e o Jogador "+(jogador+1));
 				mensagemEnv = "msg:>Conectado";
 				
@@ -77,8 +77,8 @@ public class Jogador extends Thread{
 					else if(mensagemEnv.contains("int:>")&&mensagemEnv.indexOf(">")==4&&this.jogador==jogando) {
 						posicao = Integer.parseInt(mensagemEnv.replaceFirst("int:>", ""));
 						tabuleiro = win.getTabuleiro();
-						regra = Teste.jogar(jogando, posicao, tabuleiro);
-						ganhador = Teste.verificaVazios(tabuleiro);
+						regra = Mancala.jogar(jogando, posicao, tabuleiro);
+						ganhador = Mancala.verificaVazios(tabuleiro);
 						if(ganhador!=-1) {
 							fim = true;
 							jogando = ganhador;
@@ -91,7 +91,7 @@ public class Jogador extends Thread{
 						}
 						win.salvaTabuleiro();
 						salvaJogador();
-						ostream.writeUTF("tab:>"+Teste.toIstring(tabuleiro));
+						ostream.writeUTF("tab:>"+Mancala.toIstring(tabuleiro));
 						ostream.writeUTF("jog:>"+jogando);
 						if(fim) {
 							ostream.writeUTF("fim:>");
@@ -109,7 +109,7 @@ public class Jogador extends Thread{
 					if(!fim) {
 						mensagemEnv = win.getMensagem();
 					}
-					if(mensagemEnv=="sur:>"&&Teste.confirmaDesistencia()==1) {
+					if(mensagemEnv=="sur:>"&&Mancala.confirmaDesistencia()==1) {
 						mensagemEnv = "";
 					}
 				}
@@ -122,19 +122,19 @@ public class Jogador extends Thread{
 						ostream.writeUTF("jog:>"+jogador1);
 					}
 					ostream.flush();
-					Teste.derrota();
+					Mancala.derrota();
 				}
 				else if(jogando==jogador) {
-					Teste.vitoria();
+					Mancala.vitoria();
 				}
 				else if(jogando==2) {
-					Teste.empate();
+					Mancala.empate();
 				}
 				else {
-					Teste.derrota();
+					Mancala.derrota();
 				}
 				
-				novamente = Teste.confirmaJogarNovamente();
+				novamente = Mancala.confirmaJogarNovamente();
 				
 				if(novamente == 0) {
 					int[][] newTabuleiro ={{0,4,4,4,4,4,4},
@@ -143,6 +143,7 @@ public class Jogador extends Thread{
 					fim = false;
 				}
 			}
+			System.exit(0);
 		} catch(Exception e) {//System.out.println(e);
 			e.printStackTrace();
 		}
@@ -166,7 +167,7 @@ public class Jogador extends Thread{
 					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("tab:>")&&mensagemRec.indexOf(">")==4) {
-					int[][] tabuleiro = Teste.toTabuleiro(mensagemRec.replaceFirst("tab:>", ""));
+					int[][] tabuleiro = Mancala.toTabuleiro(mensagemRec.replaceFirst("tab:>", ""));
 					win.setTabuleiro(tabuleiro);
 					win.salvaTabuleiro();
 					//win.atualizaInterface();
@@ -178,7 +179,7 @@ public class Jogador extends Thread{
 					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("sur:>")&&mensagemRec.indexOf(">")==4) {
-					Teste.desistir(Integer.parseInt(mensagemRec.replaceFirst("sur:>", "")));
+					Mancala.desistir(Integer.parseInt(mensagemRec.replaceFirst("sur:>", "")));
 					if(jogador!=Integer.parseInt(mensagemRec.replaceFirst("sur:>", ""))){
 						fim = true;
 						win.finaliza();
