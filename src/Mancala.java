@@ -123,18 +123,28 @@ public class Mancala {
 				if(j>6) {
 					j--;
 				}
-				tabuleiro[jogador1][j]++;
-				sementes--;
-				j--;
+				if(jogador==jogador2&&j==0) {
+					j--;
+				}
+				else {
+					tabuleiro[jogador1][j]++;
+					sementes--;
+					j--;
+				}
 			}
 			while(j<=6&&sementes>0) {
 				inverter = false;
 				if(j<0) {
 					j++;
 				}
-				tabuleiro[jogador2][j]++;
-				sementes--;
-				j++;
+				if(jogador==jogador1&&j==6) {
+					j++;
+				}
+				else {
+					tabuleiro[jogador2][j]++;
+					sementes--;
+					j++;
+				}
 			}
 			////////////////////
 			if(inverter) {
@@ -156,12 +166,10 @@ public class Mancala {
 		
 		if(ultimaPosicao==0&&ultimoJogador) { //ultimoJogador == true == jogador1
 			//Jogador 1 joga novamente
-			System.out.println("Jogador 1 joga novamente");
 			return 1;
 		}
 		else if(ultimaPosicao==6&&!ultimoJogador) { //ultimoJogador == false == jogador2
 			//Jogador 2 joga novamente
-			System.out.println("Jogador 2 joga novamente");
 			return 2;
 		}
 		else if(tabuleiro[jogador1][ultimaPosicao]-1==0&&ultimoJogador&&ultimaPosicao!=0&&tabuleiro[jogador2][ultimaPosicao-1]>0&&jogador==jogador1) {
