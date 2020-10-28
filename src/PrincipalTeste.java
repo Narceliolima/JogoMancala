@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import comunicacao.Conexao;
+
 
 /*
  * Classe utilizada somente para testes, favor ignorar.

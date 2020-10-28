@@ -1,3 +1,4 @@
+package grafica;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -29,7 +30,7 @@ public class GUI {
 	private int jogador;
 	String[] cores = {"#EA9D86","#87DAC4"};
 	//--------------------------------------------//--------------------------------------------//
-	//private ArrayList<JButton> botoes; //Refinar... Caso dê tempo
+	//private ArrayList<JButton> botoes; //Refinar...
 	private JButton botao01;
 	private JButton botao02;
 	private JButton botao03;
@@ -414,6 +415,7 @@ public class GUI {
 	private void iniciaChat() {
 		
 		chat = new JTextArea();
+		chat.setEditable(false);
 		chat.setBounds(1, 1, 187, 580);
 		frame.getContentPane().add(chat);
 		

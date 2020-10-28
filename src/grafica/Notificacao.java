@@ -1,3 +1,4 @@
+package grafica;
 import javax.swing.JOptionPane;
 
 //Classe usada para notificacoes relevantes ao jogador

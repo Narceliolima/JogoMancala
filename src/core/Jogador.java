@@ -1,14 +1,12 @@
+package core;
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import comunicacao.Conexao;
+import grafica.GUI;
+import grafica.Notificacao;
 
 public class Jogador extends Thread{
 	
-	/*private ServerSocket serverSocket = null;
-	private DataOutputStream ostream = null;
-	private DataInputStream istream = null;
-	private String host = "localhost";
-	private int port = 9090;
-	private Socket socket = null;*/
 	private String mensagemEnv = "";
 	private String mensagemRec = "";
 	private Conexao conexao;
@@ -44,32 +42,7 @@ public class Jogador extends Thread{
 		}
 		
 		
-		//-----------------------------------/-----------------------------------//
-		/*host = Notificacao.configuraHost();
-		port = Notificacao.configuraPorta();
-		
 		try {
-			socket = new Socket(host, port);
-		} catch(IOException e)	{
-			win.setMensagemEnviada("Host não encontrado.");
-			win.setMensagemEnviada("Criando servidor...");
-			try {
-				serverSocket = new ServerSocket(port);
-				win.setMensagemEnviada("Aguardando conexão...");
-				socket = serverSocket.accept();
-				win.setMensagemEnviada("Conexão Estabelecida.");
-				this.jogador = 0;
-			} catch (Exception e2) {
-				System.out.println(e2);
-			}
-		}*/
-		//-----------------------------------/-----------------------------------//
-		
-		
-		
-		try {
-			//ostream = new DataOutputStream(socket.getOutputStream());
-			//istream = new DataInputStream(socket.getInputStream());
 			this.start();
 			
 			int novamente = 0;
@@ -89,8 +62,6 @@ public class Jogador extends Thread{
 				
 				while(mensagemEnv!="sur:>"&&!fim) {
 					if(mensagemEnv.contains("msg:>")&&mensagemEnv.indexOf(">")==4) {
-						//ostream.writeUTF(mensagemEnv.substring(0, 5)+"Jogador "+(jogador+1)+": "+mensagemEnv.substring(5));
-						//ostream.flush();
 						conexao.enviaDado(mensagemEnv.substring(0, 5)+"Jogador "+(jogador+1)+": "+mensagemEnv.substring(5));
 					}
 					else if(mensagemEnv.contains("int:>")&&mensagemEnv.indexOf(">")==4&&this.jogador==jogando) {
@@ -110,27 +81,18 @@ public class Jogador extends Thread{
 						}
 						win.salvaTabuleiro();
 						salvaJogador();
-						//ostream.writeUTF("tab:>"+Conversor.toIstring(tabuleiro));
-						//ostream.writeUTF("jog:>"+jogando);
 						conexao.enviaDado("tab:>"+Conversor.toIstring(tabuleiro));
 						conexao.enviaDado("jog:>"+jogando);
 						if(fim) {
-							//ostream.writeUTF("fim:>");
 							conexao.enviaDado("fim:>");
 						}
-						//ostream.flush();
 					}
 					else if(mensagemEnv.contains("vol:>")&&mensagemEnv.indexOf(">")==4&&this.jogador==jogando) {
 						win.voltaJogada();
 						voltaJogada();
-						//ostream.writeUTF(mensagemEnv);
-						//ostream.flush();
 						conexao.enviaDado(mensagemEnv);
 					}
 					else if(mensagemEnv.contains("sai:>")&&mensagemEnv.indexOf(">")==4) {
-						//ostream.writeUTF(mensagemEnv+this.jogador);
-						//ostream.flush();
-						//System.out.println(mensagemEnv+this.jogador);
 						conexao.enviaDado(mensagemEnv+this.jogador);
 					}
 					win.turno(jogando);
@@ -143,17 +105,13 @@ public class Jogador extends Thread{
 					}
 				}
 				if(mensagemEnv=="sur:>") {
-					//ostream.writeUTF(mensagemEnv+jogador);
 					conexao.enviaDado(mensagemEnv+jogador);
 					if(jogador==jogador1) {
-						//ostream.writeUTF("jog:>"+jogador2);
 						conexao.enviaDado("jog:>"+jogador2);
 					}
 					else {
-						//ostream.writeUTF("jog:>"+jogador1);
 						conexao.enviaDado("jog:>"+jogador1);
 					}
-					//ostream.flush();
 					Notificacao.derrota();
 				}
 				else if(jogando==jogador) {
@@ -176,15 +134,13 @@ public class Jogador extends Thread{
 					fim = false;
 				}
 			}
-			//ostream.writeUTF("sai:>"+this.jogador);
-			//ostream.flush();
 			conexao.enviaDado("sai:>"+this.jogador);
 			System.exit(0);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+/*	
 	public static void main(String[] args) {
 		
 		int[][] tabuleiro ={{0,4,4,4,4,4,4},
@@ -193,11 +149,10 @@ public class Jogador extends Thread{
 		new Jogador(tabuleiro);
 
 	}
-
+*/
 	public void run(){
 		while (mensagemRec!="erro") {
-			try {        
-				//mensagemRec = istream.readUTF();
+			try {
 				mensagemRec = conexao.recebeDado();
 				if(mensagemRec.contains("msg:>")&&mensagemRec.indexOf(">")==4) {
 					win.setMensagemEnviada(mensagemRec.replaceFirst("msg:>", ""));
