@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Classe utilizada somente para testes, favor ignorar.
 */
 
-public class Principal {
+public class PrincipalTeste extends Thread{
 	
 	private static ServerSocket serverSocket = null;
 	private static Socket socket = null;
@@ -22,6 +22,7 @@ public class Principal {
 	private static String host = "localhost";
 	private static String mensagemEnv = "";
 	private static String mensagemRec = "";
+	private static Conexao conexao;
 	//--------------------------------------------//--------------------------------------------//
 	
 	
@@ -29,13 +30,37 @@ public class Principal {
 	private static final int jogador1 = 0; //Trocar pra boolean
 	private static final int jogador2 = 1; //Trocar pra boolean
 	
+	public PrincipalTeste() {
+		this.start();
+	}
+	
 	public static void main(String[] args) {
 		
 		
-		int[][] tabuleiro ={{0,4,4,4,4,4,4},
+		int[][] tabuleiro ={{4,4,4,4,4,4,0},
 							{4,4,4,4,4,4,0}}; //0 a 6
 		
-		int[][] teste = new int[1][1];
+		conexao = new Conexao();
+		conexao.setHost("localhost");
+		conexao.setPort(9090);
+		if(!conexao.conectaServidor()) {
+			conexao.criaServidor();
+		}
+		new PrincipalTeste();
+		Scanner s = new Scanner(System.in);
+		String mensagem = s.nextLine();
+		
+		while(mensagem!="177") {
+			conexao.enviaDado(mensagem+"a");
+			conexao.enviaDado(mensagem+"b");
+			conexao.enviaDado(mensagem+"c");
+			mensagem = s.nextLine();
+		}
+		s.close();
+		
+		
+		//System.out.println(Teste.jogar(1, 5, tabuleiro));
+		//Conversor.imprimeMatriz(tabuleiro);
 		
 		//new Jogador(tabuleiro).start();
 		
@@ -63,17 +88,16 @@ public class Principal {
 			}
 		});*/
 		
-		System.out.println("Começou!");
+		/*System.out.println("Começou!");
 		System.out.println("Jogador 1 joga");
 		//String mensagem = win.getMensagem();
 		int posicao = 999;
 
 		//int posicao = sc.nextInt();
 		int jogador = jogador1;
-		int regra;
+		int regra;*/
 		
-		int[][] t = tabuleiro.clone();
-		
+		/*
 		System.out.println(tabuleiro);
 		System.out.println(t);
 		Mancala.imprimeMatriz(tabuleiro);
@@ -96,29 +120,12 @@ public class Principal {
 			posicao = 1;
 		}
 		//sc.close();
-		System.out.println("Desistiram");
+		System.out.println("Desistiram");*/
 	}
 	
-	public void colocan() {
-		try {
-			serverSocket = new ServerSocket(port);
-			System.out.println("Aguardando conexão...");
-			socket = serverSocket.accept();
-			System.out.println("Conexão Estabelecida.");
-			ostream = new DataOutputStream(socket.getOutputStream());
-			istream = new DataInputStream(socket.getInputStream());
-
-			//this.start();
-
-			Scanner console = new Scanner(System.in);
-			while(true){
-				System.out.println("Mensagem: ");
-				String MSnd = console.nextLine(); 
-				ostream.writeUTF(MSnd);
-				ostream.flush();
-			}
-		} catch(Exception e){
-			System.out.println(e);
+	public void run() {
+		while(true) {
+			System.out.println(conexao.recebeDado());
 		}
 	}
 }

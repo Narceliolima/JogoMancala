@@ -1,104 +1,12 @@
-import javax.swing.JOptionPane;
 
 public class Mancala {
 	
 	private static final int jogador1 = 0;
 	private static final int jogador2 = 1;
 	
-	public static void imprimeMatriz(int[][] matriz) {
-		int i,j;
-		for(i=0;i<matriz.length;i++) {
-			for(j=0;j<matriz[i].length;j++) {
-				System.out.print(matriz[i][j]);
-			}
-			System.out.println();
-		}
-	}
-	
-	public static String toIstring(int[][] tabuleiro) {
-		
-		String string = "";
-		
-		for(int i=0;i<tabuleiro.length;i++) {
-			for(int j=0;j<tabuleiro[i].length;j++) {
-				string += tabuleiro[i][j]+"-";
-			}
-		}
-		
-		return string;
-	}
-	
-	public static int[][] toTabuleiro(String string) {
-		
-		int[][] tabuleiro = new int[2][7];
-		int n = 0;
-		
-		for(int i=0;i<tabuleiro.length;i++) {
-			for(int j=0;j<tabuleiro[i].length;j++) {
-				if(string.charAt(n+1)=='-') {
-					tabuleiro[i][j] = Integer.parseInt(""+string.charAt(n));
-					n+=2;
-				}
-				else if(string.charAt(n+1)!='-') {
-					tabuleiro[i][j] = Integer.parseInt(""+string.charAt(n)+string.charAt(n+1));
-					n+=3;
-				}
-			}
-		}
-		
-		return tabuleiro;
-	}
-	
-	public static String configuraHost() {
-		
-		String host;
-		
-		host = JOptionPane.showInputDialog("Qual o ip do servidor? (Padrão localhost)");
-		if(host==null||host=="") {
-			return "localhost";
-		}
-		else {
-			return host;
-		}
-	}
-	
-	public static int configuraPorta() {
-		
-		String porta;
-		
-		porta = JOptionPane.showInputDialog("Qual a porta do servidor? (Padrão 9090)");
-		if(porta==null||porta=="") {
-			return 9090;
-		}
-		else {
-			return Integer.parseInt(porta);
-		}
-	}
-	
-	public static void desistir(int jogador) {
-		JOptionPane.showMessageDialog(null, "Jogador "+(jogador+1)+" desistiu");
-	}
-	
-	public static int confirmaDesistencia() {
-		return JOptionPane.showConfirmDialog(null, "Tem certeza?","Desistencia",JOptionPane.YES_NO_OPTION);
-	}
-	
-	public static int confirmaJogarNovamente() {
-		return JOptionPane.showConfirmDialog(null, "Deseja jogar novamente?","Revanche",JOptionPane.YES_NO_OPTION);
-	}
-	
-	public static void vitoria() {
-		JOptionPane.showMessageDialog(null, "Você venceu");
-	}
-	
-	public static void derrota() {
-		JOptionPane.showMessageDialog(null, "Você perdeu");
-	}
-	
-	public static void empate() {
-		JOptionPane.showMessageDialog(null, "Empate!");
-	}
-	
+	//Função que faz as peças "mover-se" pelo tabuleiro, ela recebe um jogador, equivalente ao jogador que está jogando
+	//no momento, uma posição equivalente a posição que o jogador desenha remover as sementes para depois redistribuir
+	//e o tabuleiro com as posições atuais das sementes.
 	public static int jogar(int jogador, int posicao, int[][] tabuleiro) {
 		
 		int j;
@@ -111,11 +19,11 @@ public class Mancala {
 		tabuleiro[jogador][posicao] = 0;
 		if(jogador == 0) {
 			j = posicao - 1;
-			inverter = true; ///////
+			inverter = true; //////////
 		}
 		else {
 			j = posicao + 1;
-			inverter = false; ///////
+			inverter = false;//////////
 		}
 		
 		while(sementes>0) {
@@ -146,7 +54,7 @@ public class Mancala {
 					j++;
 				}
 			}
-			////////////////////
+			////////////////////////
 			if(inverter) {
 				ultimaPosicao = j+1;
 			}
@@ -162,9 +70,11 @@ public class Mancala {
 		
 	}
 	
+	//Caso a jogada satisfaça algumas das regras, aplica de acordo com sua condição.
 	public static int aplicaRegra(int ultimaPosicao, boolean ultimoJogador, int[][] tabuleiro,int jogador) {
 		
 		if(ultimaPosicao==0&&ultimoJogador) { //ultimoJogador == true == jogador1
+			//Se a ultima peça cair na kalla do jogador que está jogando
 			//Jogador 1 joga novamente
 			return 1;
 		}
@@ -173,6 +83,7 @@ public class Mancala {
 			return 2;
 		}
 		else if(tabuleiro[jogador1][ultimaPosicao]-1==0&&ultimoJogador&&ultimaPosicao!=0&&tabuleiro[jogador2][ultimaPosicao-1]>0&&jogador==jogador1) {
+			//Se a ultima peça cair em uma buraco vazio do lado do jogador e o buraco adjacente tiver peças
 			tabuleiro[jogador1][0] += tabuleiro[jogador2][ultimaPosicao-1] + 1;
 			tabuleiro[jogador1][ultimaPosicao] = 0;
 			tabuleiro[jogador2][ultimaPosicao-1] = 0;
@@ -187,6 +98,7 @@ public class Mancala {
 		return 0;
 	}
 	
+	//Função varre a fileira de cada jogador para checar se algum dos lados está vazio
 	public static int verificaVazios(int[][] tabuleiro) {
 		
 		int contagemSementes;
@@ -212,11 +124,9 @@ public class Mancala {
 					tabuleiro [jogador1][0] = esvaziaResto(tabuleiro[jogador1], resultado);
 				}
 				if(tabuleiro[jogador1][0]>tabuleiro[jogador2][6]) {
-					JOptionPane.showMessageDialog(null, "Jogador 1 venceu");
 					return 0;
 				}
 				else if(tabuleiro[jogador1][0]<tabuleiro[jogador2][6]){
-					JOptionPane.showMessageDialog(null, "Jogador 2 venceu");
 					return 1;
 				}
 				else if(tabuleiro[jogador1][0]==tabuleiro[jogador2][6]) {
@@ -227,6 +137,7 @@ public class Mancala {
 		return -1;
 	}
 	
+	//Função que serve para esvaziar o lado adjacente
 	public static int esvaziaResto(int[] vetor, int resultado) {
 		for(int i=0;i<vetor.length;i++) {
 			resultado += vetor[i];

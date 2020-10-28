@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +27,7 @@ public class GUI {
 	private JButton desistir;
 	private JButton voltarVez;
 	private int jogador;
+	String[] cores = {"#EA9D86","#87DAC4"};
 	//--------------------------------------------//--------------------------------------------//
 	//private ArrayList<JButton> botoes; //Refinar... Caso dê tempo
 	private JButton botao01;
@@ -64,7 +67,7 @@ public class GUI {
 		
 		JLabel planoDeFundo = new JLabel("Tabuleiro Mancala");
 		planoDeFundo.setBounds(208, 0, 1024, 648);
-		planoDeFundo.setIcon(new ImageIcon(getClass().getResource("Mancala.png")));
+		planoDeFundo.setIcon(new ImageIcon(getClass().getResource("imagens/Mancala.png")));
 		frame.getContentPane().add(planoDeFundo);
 	}
 	
@@ -153,6 +156,18 @@ public class GUI {
 			}
 		});
 		
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				mensagem = "sai:>";
+				pressionado = true;
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		botao01.addActionListener(ato);
 		botao02.addActionListener(ato);
 		botao03.addActionListener(ato);
@@ -209,6 +224,7 @@ public class GUI {
 		else {
 			this.jogando.setText("Vez do oponente");
 		}
+		this.jogando.setForeground(Color.decode(cores[jogando]));
 	}
 	
 	public void salvaTabuleiro() {

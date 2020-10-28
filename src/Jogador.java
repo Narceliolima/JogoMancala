@@ -1,21 +1,17 @@
 import java.awt.EventQueue;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class Jogador extends Thread{
 	
-	private ServerSocket serverSocket = null;
+	/*private ServerSocket serverSocket = null;
 	private DataOutputStream ostream = null;
 	private DataInputStream istream = null;
 	private String host = "localhost";
 	private int port = 9090;
-	private Socket socket = null;
+	private Socket socket = null;*/
 	private String mensagemEnv = "";
 	private String mensagemRec = "";
+	private Conexao conexao;
 	private GUI win;
 	//--------------------------------------------//--------------------------------------------//
 	private ArrayList<Integer> historico;
@@ -28,10 +24,29 @@ public class Jogador extends Thread{
 	public Jogador(int[][] tabuleiro) {
 		
 		win = new GUI(tabuleiro);
-		historico = new ArrayList<Integer>();
 		createRunnable();
-		host = Mancala.configuraHost();
-		port = Mancala.configuraPorta();
+		historico = new ArrayList<Integer>();
+		conexao = new Conexao();
+		
+		conexao.setHost(Notificacao.configuraHost());
+		conexao.setPort(Notificacao.configuraPorta());
+		if(!conexao.conectaServidor()) {
+			win.setMensagemEnviada("Host não encontrado.");
+			win.setMensagemEnviada("Criando servidor...");
+			win.setMensagemEnviada("Aguardando conexão...");
+			if(conexao.criaServidor()) {
+				win.setMensagemEnviada("Conexão Estabelecida.");
+				this.jogador = 0;
+			}
+			else{
+				win.setMensagemEnviada("Ocorreu um erro, reinicie seu jogo");
+			}
+		}
+		
+		
+		//-----------------------------------/-----------------------------------//
+		/*host = Notificacao.configuraHost();
+		port = Notificacao.configuraPorta();
 		
 		try {
 			socket = new Socket(host, port);
@@ -47,11 +62,14 @@ public class Jogador extends Thread{
 			} catch (Exception e2) {
 				System.out.println(e2);
 			}
-		}
+		}*/
+		//-----------------------------------/-----------------------------------//
+		
+		
 		
 		try {
-			ostream = new DataOutputStream(socket.getOutputStream());
-			istream = new DataInputStream(socket.getInputStream());
+			//ostream = new DataOutputStream(socket.getOutputStream());
+			//istream = new DataInputStream(socket.getInputStream());
 			this.start();
 			
 			int novamente = 0;
@@ -71,8 +89,9 @@ public class Jogador extends Thread{
 				
 				while(mensagemEnv!="sur:>"&&!fim) {
 					if(mensagemEnv.contains("msg:>")&&mensagemEnv.indexOf(">")==4) {
-						ostream.writeUTF(mensagemEnv.substring(0, 5)+"Jogador "+(jogador+1)+": "+mensagemEnv.substring(5));
-						ostream.flush();
+						//ostream.writeUTF(mensagemEnv.substring(0, 5)+"Jogador "+(jogador+1)+": "+mensagemEnv.substring(5));
+						//ostream.flush();
+						conexao.enviaDado(mensagemEnv.substring(0, 5)+"Jogador "+(jogador+1)+": "+mensagemEnv.substring(5));
 					}
 					else if(mensagemEnv.contains("int:>")&&mensagemEnv.indexOf(">")==4&&this.jogador==jogando) {
 						posicao = Integer.parseInt(mensagemEnv.replaceFirst("int:>", ""));
@@ -91,60 +110,77 @@ public class Jogador extends Thread{
 						}
 						win.salvaTabuleiro();
 						salvaJogador();
-						ostream.writeUTF("tab:>"+Mancala.toIstring(tabuleiro));
-						ostream.writeUTF("jog:>"+jogando);
+						//ostream.writeUTF("tab:>"+Conversor.toIstring(tabuleiro));
+						//ostream.writeUTF("jog:>"+jogando);
+						conexao.enviaDado("tab:>"+Conversor.toIstring(tabuleiro));
+						conexao.enviaDado("jog:>"+jogando);
 						if(fim) {
-							ostream.writeUTF("fim:>");
+							//ostream.writeUTF("fim:>");
+							conexao.enviaDado("fim:>");
 						}
-						ostream.flush();
+						//ostream.flush();
 					}
 					else if(mensagemEnv.contains("vol:>")&&mensagemEnv.indexOf(">")==4&&this.jogador==jogando) {
 						win.voltaJogada();
 						voltaJogada();
-						ostream.writeUTF(mensagemEnv);
-						ostream.flush();
+						//ostream.writeUTF(mensagemEnv);
+						//ostream.flush();
+						conexao.enviaDado(mensagemEnv);
+					}
+					else if(mensagemEnv.contains("sai:>")&&mensagemEnv.indexOf(">")==4) {
+						//ostream.writeUTF(mensagemEnv+this.jogador);
+						//ostream.flush();
+						//System.out.println(mensagemEnv+this.jogador);
+						conexao.enviaDado(mensagemEnv+this.jogador);
 					}
 					win.turno(jogando);
 					win.atualizaInterface();
 					if(!fim) {
 						mensagemEnv = win.getMensagem();
 					}
-					if(mensagemEnv=="sur:>"&&Mancala.confirmaDesistencia()==1) {
+					if(mensagemEnv=="sur:>"&&Notificacao.confirmaDesistencia()==1) {
 						mensagemEnv = "";
 					}
 				}
 				if(mensagemEnv=="sur:>") {
-					ostream.writeUTF(mensagemEnv+jogador);
+					//ostream.writeUTF(mensagemEnv+jogador);
+					conexao.enviaDado(mensagemEnv+jogador);
 					if(jogador==jogador1) {
-						ostream.writeUTF("jog:>"+jogador2);
+						//ostream.writeUTF("jog:>"+jogador2);
+						conexao.enviaDado("jog:>"+jogador2);
 					}
 					else {
-						ostream.writeUTF("jog:>"+jogador1);
+						//ostream.writeUTF("jog:>"+jogador1);
+						conexao.enviaDado("jog:>"+jogador1);
 					}
-					ostream.flush();
-					Mancala.derrota();
+					//ostream.flush();
+					Notificacao.derrota();
 				}
 				else if(jogando==jogador) {
-					Mancala.vitoria();
+					Notificacao.vitoria();
 				}
 				else if(jogando==2) {
-					Mancala.empate();
+					Notificacao.empate();
 				}
 				else {
-					Mancala.derrota();
+					Notificacao.derrota();
 				}
 				
-				novamente = Mancala.confirmaJogarNovamente();
+				novamente = Notificacao.confirmaJogarNovamente();
 				
 				if(novamente == 0) {
 					int[][] newTabuleiro ={{0,4,4,4,4,4,4},
 										   {4,4,4,4,4,4,0}}; //0 a 6
 					win.setTabuleiro(newTabuleiro);
+					this.jogando = 0;
 					fim = false;
 				}
 			}
+			//ostream.writeUTF("sai:>"+this.jogador);
+			//ostream.flush();
+			conexao.enviaDado("sai:>"+this.jogador);
 			System.exit(0);
-		} catch(Exception e) {//System.out.println(e);
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -159,27 +195,25 @@ public class Jogador extends Thread{
 	}
 
 	public void run(){
-		while (true) {
+		while (mensagemRec!="erro") {
 			try {        
-				mensagemRec = istream.readUTF();
+				//mensagemRec = istream.readUTF();
+				mensagemRec = conexao.recebeDado();
 				if(mensagemRec.contains("msg:>")&&mensagemRec.indexOf(">")==4) {
 					win.setMensagemEnviada(mensagemRec.replaceFirst("msg:>", ""));
-					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("tab:>")&&mensagemRec.indexOf(">")==4) {
-					int[][] tabuleiro = Mancala.toTabuleiro(mensagemRec.replaceFirst("tab:>", ""));
+					int[][] tabuleiro = Conversor.toTabuleiro(mensagemRec.replaceFirst("tab:>", ""));
 					win.setTabuleiro(tabuleiro);
 					win.salvaTabuleiro();
-					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("jog:>")&&mensagemRec.indexOf(">")==4) {
 					this.jogando = Integer.parseInt(mensagemRec.replaceFirst("jog:>", ""));
 					win.turno(jogando);
 					salvaJogador();
-					//win.atualizaInterface();
 				}
 				else if(mensagemRec.contains("sur:>")&&mensagemRec.indexOf(">")==4) {
-					Mancala.desistir(Integer.parseInt(mensagemRec.replaceFirst("sur:>", "")));
+					Notificacao.desistir(Integer.parseInt(mensagemRec.replaceFirst("sur:>", "")));
 					if(jogador!=Integer.parseInt(mensagemRec.replaceFirst("sur:>", ""))){
 						fim = true;
 						win.finaliza();
@@ -193,7 +227,14 @@ public class Jogador extends Thread{
 					win.voltaJogada();
 					voltaJogada();
 					win.turno(jogando);
-					//win.atualizaInterface();
+				}
+				else if(mensagemRec.contains("sai:>")&&mensagemRec.indexOf(">")==4) {
+					Notificacao.saida(Integer.parseInt(mensagemRec.replaceFirst("sai:>", "")));
+					if(jogador!=Integer.parseInt(mensagemRec.replaceFirst("sai:>", ""))){
+						fim = true;
+						this.jogando = this.jogador;
+						win.finaliza();
+					}
 				}
 				win.atualizaInterface();
 			} catch(Exception e) {}
