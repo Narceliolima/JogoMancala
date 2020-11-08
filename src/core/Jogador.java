@@ -105,13 +105,13 @@ public class Jogador extends Thread{
 					}
 				}
 				if(mensagemEnv=="sur:>") {
-					conexao.enviaDado(mensagemEnv+jogador);
 					if(jogador==jogador1) {
 						conexao.enviaDado("jog:>"+jogador2);
 					}
 					else {
 						conexao.enviaDado("jog:>"+jogador1);
 					}
+					conexao.enviaDado(mensagemEnv+jogador);
 					Notificacao.derrota();
 				}
 				else if(jogando==jogador) {
